@@ -1,7 +1,7 @@
 package ch.plebsapps.dynamiccontentexample
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -11,34 +11,42 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-
-val namesList: ArrayList<String> = arrayListOf("Danna", "Michael", "Stefan", "John", "Georgia")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GreetingsList(names = namesList)
+            MainScreen()
         }
     }
 }
 
 @Composable
-fun GreetingsList(names: List<String>) {
+fun MainScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        for (name in names) {
-            Greeting(name = name)
-        }
-        Button(onClick = { namesList.add("New Name") }) {
-            Text("Add new name")
-        }
+        GreetingsList()
+    }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+fun GreetingsList() {
+    val greetingsListState = remember{ mutableStateListOf<String>("John", "Amanda") }
+
+    for (name in greetingsListState) {
+        Greeting(name = name)
+    }
+    Button(onClick = { greetingsListState.add("Michael") }) {
+        Text("Add new name")
     }
 }
 
@@ -53,5 +61,5 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    GreetingsList(names = namesList)
+    MainScreen()
 }
