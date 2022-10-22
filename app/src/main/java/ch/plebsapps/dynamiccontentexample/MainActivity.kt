@@ -1,6 +1,5 @@
 package ch.plebsapps.dynamiccontentexample
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,23 +27,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
+    val greetingsListState = remember{ mutableStateListOf<String>("John", "Amanda") }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        GreetingsList()
+        GreetingsList(greetingsListState) {
+            greetingsListState.add("Michael")
+        }
     }
 }
 
 @Composable
-fun GreetingsList() {
-    val greetingsListState = remember{ mutableStateListOf<String>("John", "Amanda") }
-
-    for (name in greetingsListState) {
+fun GreetingsList(namesList: List<String>, buttonClick: () -> Unit) {
+    for (name in namesList) {
         Greeting(name = name)
     }
-    Button(onClick = { greetingsListState.add("Michael") }) {
+    Button(onClick = buttonClick) {
         Text("Add new name")
     }
 }
