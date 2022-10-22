@@ -37,7 +37,6 @@ fun MainScreen() {
     }
 }
 
-
 @Composable
 fun GreetingsList() {
     val greetingsListState = remember{ mutableStateListOf<String>("John", "Amanda") }
